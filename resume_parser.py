@@ -1,4 +1,3 @@
-import os
 import fitz  # PyMuPDF
 import spacy
 import pandas as pd
@@ -11,9 +10,25 @@ SKILL_LIST = [
     "machine learning", "deep learning", "nlp", "excel"
 ]
 
+def load_spacy_model():
+    """
+    Dynamically download spaCy model if missing.
+    Works on any environment, including Streamlit Cloud.
+    """
+    global _spacy_model
+    if _spacy_model is None:
+        try:
+            _spacy_model = spacy.load("en_core_web_sm")
+        except OSError:
+            # Download if not present
+            from spacy.cli import download
+            download("en_core_web_sm")
+            _spacy_model = spacy.load("en_core_web_sm")
+    return _spacy_model
+
 def extract_text_from_pdf(file_bytes):
     """
-    Extract text from a PDF file uploaded as bytes.
+    Extract text from PDF bytes.
     """
     text = ""
     with fitz.open(stream=file_bytes, filetype="pdf") as doc:
@@ -23,7 +38,7 @@ def extract_text_from_pdf(file_bytes):
 
 def extract_text_from_excel(uploaded_file):
     """
-    Extract all cell contents from an uploaded Excel file as plain text.
+    Extract text from Excel file.
     """
     df = pd.read_excel(uploaded_file)
     text = " ".join(df.astype(str).fillna("").values.flatten())
@@ -31,12 +46,10 @@ def extract_text_from_excel(uploaded_file):
 
 def extract_skills(text):
     """
-    Detect skills from text using spaCy NLP model.
+    Find skills in text using spaCy and a predefined skill list.
     """
-    global _spacy_model
-    if _spacy_model is None:
-        _spacy_model = spacy.load("en_core_web_sm")
-    doc = _spacy_model(text.lower())
+    nlp = load_spacy_model()
+    doc = nlp(text.lower())
     found_skills = set()
     for token in doc:
         if token.text in SKILL_LIST:
