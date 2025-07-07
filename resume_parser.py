@@ -1,3 +1,6 @@
+import os
+os.system("python -m spacy download en_core_web_sm")
+
 import fitz  # PyMuPDF
 import spacy
 import pandas as pd
