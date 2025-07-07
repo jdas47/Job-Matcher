@@ -3,10 +3,6 @@ import fitz  # PyMuPDF
 import spacy
 import pandas as pd
 
-
-os.system("python -m spacy download en_core_web_sm")
-
-
 _spacy_model = None
 
 SKILL_LIST = [
