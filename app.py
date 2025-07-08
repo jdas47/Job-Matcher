@@ -5,9 +5,11 @@ from resume_parser import (
     extract_skills,
     suggest_skills,
 )
-from job_scraper import generate_search_links
+from job_scraper import generate_search_links, fetch_live_jobs
 from db import save_history, load_history
 import json
+
+st.set_page_config(page_title="Resume Job Matcher", layout="wide")
 
 st.title("🎯 Resume Job Matcher")
 
@@ -64,7 +66,7 @@ if uploaded_file:
     skills = extract_skills(text)
 
     if skills:
-        st.success("Skills Found:")
+        st.success("✅ Skills Found:")
 
         # Colored tags
         st.markdown(" ".join(
@@ -90,7 +92,7 @@ if uploaded_file:
         else:
             st.success("✅ Your resume already includes many key skills!")
 
-        # Job Links
+        # Static Job Links
         job_links = generate_search_links(skills, location, job_type, remote_option)
 
         st.header("🔗 Job Search Links")
@@ -98,6 +100,22 @@ if uploaded_file:
             st.subheader(f"Jobs for: {skill.capitalize()}")
             for platform, link in links.items():
                 st.markdown(f"- [{platform}]({link})")
+
+        # Live Jobs via RapidAPI
+        st.header("🔴 Live Job Listings (Powered by RapidAPI)")
+
+        for skill in skills:
+            live_jobs = fetch_live_jobs(skill, location)
+
+            if live_jobs:
+                st.subheader(f"🔎 Live results for: {skill}")
+                for job in live_jobs:
+                    st.markdown(
+                        f"**{job['title']}** at {job['company']} ({job['location']})  \n"
+                        f"[Apply Here]({job['url']})"
+                    )
+            else:
+                st.info(f"No live jobs found for {skill} (or API key not set).")
 
         # Email Option
         email = st.text_input("Enter your email to receive these job links:")
@@ -118,4 +136,4 @@ if uploaded_file:
                 job_links=job_links
             )
     else:
-        st.warning("No known skills found in your resume.")
+        st.warning("⚠️ No known skills found in your resume.")
