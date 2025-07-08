@@ -66,7 +66,6 @@ streamlit run app.py
 ```
 streamlit
 pymupdf
-spacy
 pandas
 openpyxl
 ```
