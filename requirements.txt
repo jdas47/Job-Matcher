@@ -1,6 +1,5 @@
 streamlit
 pymupdf
-spacy==3.7.2
 pandas
 openpyxl
 
