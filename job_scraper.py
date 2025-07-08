@@ -1,10 +1,17 @@
 import requests
 import os
 
-# Add your RapidAPI key here or store it in environment variables
-RAPIDAPI_KEY = os.getenv("RAPIDAPI_KEY", "34614dec21mshf880c03f6ca600dp1a6382jsn27c7f3eccf8e")
+# ✅ REPLACE THIS with your real RapidAPI key,
+# or set RAPIDAPI_KEY as an environment variable on your server.
+RAPIDAPI_KEY = os.getenv(
+    "RAPIDAPI_KEY",
+    "34614dec21mshf880c03f6ca600dp1a6382jsn27c7f3eccf8e"
+)
 
 def generate_search_links(skills, location, job_type, remote_option):
+    """
+    Generates platform URLs for job searches.
+    """
     job_links = []
 
     for skill in skills:
@@ -24,8 +31,14 @@ def generate_search_links(skills, location, job_type, remote_option):
 def fetch_live_jobs(skill, location=""):
     """
     Calls JSearch API on RapidAPI to get live job listings.
+    Returns a list of job dicts:
+      - title
+      - company
+      - location
+      - url
     """
-    if RAPIDAPI_KEY == "34614dec21mshf880c03f6ca600dp1a6382jsn27c7f3eccf8e":
+    if RAPIDAPI_KEY in ["YOUR_RAPIDAPI_KEY", "", None]:
+        print("⚠️ RapidAPI key is not set. Skipping live job search.")
         return []
 
     url = "https://jsearch.p.rapidapi.com/search"
