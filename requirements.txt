@@ -1,5 +1,6 @@
 streamlit
 pymupdf
 pandas
-openpyxl
-
+rapidfuzz
+sqlalchemy
+requests
