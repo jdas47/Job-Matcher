@@ -1,7 +1,8 @@
 import requests
 import os
 
-RAPIDAPI_KEY = os.getenv("RAPIDAPI_KEY", "YOUR_RAPIDAPI_KEY")
+# Add your RapidAPI key here or store it in environment variables
+RAPIDAPI_KEY = os.getenv("RAPIDAPI_KEY", "34614dec21mshf880c03f6ca600dp1a6382jsn27c7f3eccf8e")
 
 def generate_search_links(skills, location, job_type, remote_option):
     job_links = []
