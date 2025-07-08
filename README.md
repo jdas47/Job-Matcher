@@ -1,7 +1,7 @@
 # 💼 Job Matcher
 
 A Streamlit web app that helps job seekers instantly discover job opportunities based on the skills detected in their resume.
-
+[Live App](https://job-matcher-96j4kalzteevpmwbqgv9in.streamlit.app/)
 ---
 
 ## 🚀 Features
